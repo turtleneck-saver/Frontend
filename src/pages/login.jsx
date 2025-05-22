@@ -1,23 +1,18 @@
-import styled from "styled-components";
-const Style = styled.div``; // <--여기에 css 적용시켜주세요
-const Login = () => {
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import GoogleLoginButton from "../components/GoogleLoginButton"; // 아래에서 만들 컴포넌트
+
+function Login() {
+  const googleClientId =
+    "235310330925-m7hmtbipvf03i085obskko131l84ske7.apps.googleusercontent.com";
+
   return (
-    <Style>
-      <h1>Login Page</h1>
-      <form>
-        <label>
-          Username:
-          <input type="text" name="username" />
-        </label>
-        <br />
-        <label>
-          Password:
-          <input type="password" name="password" />
-        </label>
-        <br />
-        <button type="submit">Login</button>
-      </form>
-    </Style>
+    <GoogleOAuthProvider clientId={googleClientId}>
+      <div>
+        <h1>My React App</h1>
+        <GoogleLoginButton />
+      </div>
+    </GoogleOAuthProvider>
   );
-};
+}
+
 export default Login;
