@@ -1,11 +1,11 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../auth";
 
-function ProtectedRoute({ children }) {
+const ProtectedRoute = (children) => {
   const { isAuthorized } = useAuth();
 
   if (isAuthorized === null) {
-    return <div>Loading...........</div>;
+    return <div>로그인 해라</div>;
   }
 
   if (
@@ -17,6 +17,6 @@ function ProtectedRoute({ children }) {
   }
 
   return children;
-}
+};
 
 export default ProtectedRoute;
