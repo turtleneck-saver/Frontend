@@ -6,16 +6,11 @@ const api=axios.create({baseURL: apiUrl });
 
 api.interceptors.request.use(
     (config) => {
-        const accessToken = localStorage.getItem(ACCESS_TOKEN);
+        const accessToken = localStorage.getItem('accessToken');
+        alert(accessToken);
         if (accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`;
         }
-
-        const googleAccessToken = localStorage.getItem("GOOGLE_ACCESS_TOKEN");
-        if (googleAccessToken) {
-            config.headers["X-Google-Access-Token"] = googleAccessToken
-        }
-
         return config;
     },
 
