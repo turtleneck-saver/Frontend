@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard";
 import InitAngle from "./pages/InitAngle";          // 초기 각도 설정 페이지
 import PredictAngle from "./pages/PredictAngle";    // 실시간 예측 페이지
 import { useAuth } from "./auth";
+import RedirectGoogleAuth from "./components/GoogleRedirectHandler";
 
 const Main = () => {
   const { isAuthorized } = useAuth();
@@ -29,6 +30,7 @@ const Main = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/login/callback" element={<RedirectGoogleAuth />} />
         <Route path="/login" element={<ProtectedLogin />} />
         <Route path="/register" element={<ProtectedRegister />} />
         <Route path="/dashboard" element={<Dashboard />} />

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-const Style = styled.div``; // <--여기에 css 적용시켜주세요
+const Style = styled.div``;
 const Home = () => {
   return (
     <Style>

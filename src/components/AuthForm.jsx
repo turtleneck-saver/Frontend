@@ -1,7 +1,6 @@
 import api from "../api";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { GOOGLE_ACCESS_TOKEN } from "../token";
 import { useAuth } from "../auth";
 import google from "../assets/google.png";
 
@@ -13,7 +12,6 @@ const AuthForm = ({ route, method }) => {
   const [success, setSuccess] = useState(null);
   const navigate = useNavigate();
 
-  // Replace useAuthentication with useAuth
   const { login, isAuthorized } = useAuth();
 
   const handleSubmit = async (event) => {
@@ -24,7 +22,6 @@ const AuthForm = ({ route, method }) => {
 
     try {
       if (method === "login") {
-        // Use the login method from AuthContext
         const success = await login({ username, password });
 
         if (success) {
@@ -33,7 +30,6 @@ const AuthForm = ({ route, method }) => {
           setError("Login failed. Please check your credentials.");
         }
       } else {
-        // Registration logic
         const res = await api.post(route, { username, password });
         setSuccess("Registration successful. Please login.");
         setTimeout(() => navigate("/login", { replace: true }), 2000);
@@ -64,16 +60,12 @@ const AuthForm = ({ route, method }) => {
 
   useEffect(() => {
     const handleGoogleCallback = async () => {
-      // Check if we are on the callback page
       if (window.location.pathname === "/google-callback") {
-        // Extract the token from URL query params
         const params = new URLSearchParams(window.location.search);
         const googleToken = params.get("access_token");
 
         if (googleToken) {
           localStorage.setItem(GOOGLE_ACCESS_TOKEN, googleToken);
-
-          // Validate the token through the AuthContext
           await login({ google_token: googleToken });
           navigate("/dashboard", { replace: true });
         }

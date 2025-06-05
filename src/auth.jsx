@@ -1,9 +1,8 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "./token";
 import { jwtDecode } from "jwt-decode";
 import api from "./api";
-import { ACCESS_TOKEN, REFRESH_TOKEN, GOOGLE_ACCESS_TOKEN } from "./token";
 
-// Create the AuthContext
 const AuthContext = createContext({
   isAuthorized: false,
   user: null,
@@ -11,15 +10,12 @@ const AuthContext = createContext({
   logout: () => {},
 });
 
-// AuthProvider component
 export const AuthProvider = ({ children }) => {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [user, setUser] = useState(null);
 
-  // Function to check and validate token
   const checkAuth = async () => {
     const token = localStorage.getItem(ACCESS_TOKEN);
-    const googleAccessToken = localStorage.getItem(GOOGLE_ACCESS_TOKEN);
 
     if (token) {
       try {
@@ -28,24 +24,10 @@ export const AuthProvider = ({ children }) => {
         const now = Date.now() / 1000;
 
         if (tokenExpiration < now) {
-          // Token expired, try to refresh
           await refreshToken();
         } else {
-          // Token is valid
           setIsAuthorized(true);
           setUser(decoded);
-        }
-      } catch (error) {
-        // Invalid token
-        logout();
-      }
-    } else if (googleAccessToken) {
-      try {
-        const isValid = await validateGoogleToken(googleAccessToken);
-        if (isValid) {
-          setIsAuthorized(true);
-        } else {
-          logout();
         }
       } catch (error) {
         logout();
@@ -55,7 +37,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Refresh token method
   const refreshToken = async () => {
     const refreshToken = localStorage.getItem(REFRESH_TOKEN);
     try {
@@ -77,41 +58,23 @@ export const AuthProvider = ({ children }) => {
     return false;
   };
 
-  // Validate Google token
-  const validateGoogleToken = async (googleAccessToken) => {
-    try {
-      const res = await api.post("/api/google/validate_token/", {
-        access_token: googleAccessToken,
-      });
-      return res.data.valid;
-    } catch (error) {
-      console.error("Google token validation failed", error);
-      return false;
-    }
-  };
-
-  // Login method
   const login = async (credentials) => {
     try {
       let res;
       if (credentials.google_token) {
-        // Google login
         res = await api.post("/api/google/login/", {
           access_token: credentials.google_token,
         });
       } else {
-        // Regular login
         res = await api.post("/api/token/", credentials);
       }
 
       localStorage.setItem(ACCESS_TOKEN, res.data.access);
 
-      // For regular login, also store refresh token
       if (res.data.refresh) {
         localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
       }
 
-      // Trigger auth check
       await checkAuth();
       return true;
     } catch (error) {
@@ -120,23 +83,19 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Logout method
   const logout = () => {
     localStorage.removeItem(ACCESS_TOKEN);
     localStorage.removeItem(REFRESH_TOKEN);
-    localStorage.removeItem(GOOGLE_ACCESS_TOKEN);
     setIsAuthorized(false);
     setUser(null);
   };
 
-  // Check auth on mount and set up token refresh interval
   useEffect(() => {
     checkAuth();
 
-    // Set up an interval to check and refresh token periodically
     const interval = setInterval(() => {
       checkAuth();
-    }, 5 * 60 * 1000); // Check every 5 minutes
+    }, 5 * 60 * 1000);
 
     return () => clearInterval(interval);
   }, []);
@@ -156,7 +115,6 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// Custom hook to use the auth context
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
