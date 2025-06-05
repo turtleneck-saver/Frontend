@@ -1,10 +1,8 @@
-// src/components/Dashboard.jsx
-
 import React from 'react';
-import DailyStatsCard from './DailyStatsCard';
-import WeeklyStatsChart from './WeeklyStatsChart';
-import WeeklyAngleLineChart from './WeeklyAngleLineChart';
-import MonthlyPostureTrend from './MonthlyPostureTrend';
+import DailyStatsCard from '../components/DailyStatsCard';
+import WeeklyStatsChart from '../components/WeeklyStatsChart';
+import WeeklyAngleLineChart from '../components/WeeklyAngleLineChart';
+import MonthlyPostureTrend from '../components/MonthlyPostureTrend';
 
 function Dashboard() {
   return (
@@ -12,7 +10,7 @@ function Dashboard() {
       padding: '60px 20px',
       fontFamily: 'Arial',
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #8e9edc, #a0d8ef)', // 처음 요청한 보라-파랑 그라데이션 복원
+      background: 'linear-gradient(135deg, #8e9edc, #a0d8ef)',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'flex-start'
@@ -24,7 +22,7 @@ function Dashboard() {
         gap: '30px',
         maxWidth: '1200px',
         width: '100%',
-        background: '#eceef1', 
+        background: '#eceef1',
         padding: '50px',
         borderRadius: '20px',
         boxShadow: '0 15px 50px rgba(0, 0, 0, 0.1)',
@@ -63,7 +61,7 @@ function Dashboard() {
             fontSize: '1.5rem',
             minHeight: '280px',
             flex: 1,
-            transition: 'none' // 애니메이션 제거
+            transition: 'none'
           }}>
             <p style={{ fontSize: '1.2rem' }}>📊 이번 달 총 경고 횟수</p>
             <strong style={{ fontSize: '2.5rem' }}>54회</strong>
@@ -86,7 +84,7 @@ const cardStyle = {
   overflow: 'hidden',
   boxSizing: 'border-box',
   width: '100%',
-  transition: 'none' // 애니메이션 제거
+  transition: 'none'
 };
 
 export default Dashboard;
