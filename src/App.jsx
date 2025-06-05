@@ -1,9 +1,14 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import AuthPage from "./pages/AuthPage";
+import Dashboard from "./pages/Dashboard";
+import InitAngle from "./pages/InitAngle";          // 초기 각도 설정 페이지
+import PredictAngle from "./pages/PredictAngle";    // 실시간 예측 페이지
 import { useAuth } from "./auth";
+
 const Main = () => {
   const { isAuthorized } = useAuth();
+
   const ProtectedLogin = () => {
     return isAuthorized ? (
       <Navigate to="/dashboard" />
@@ -11,6 +16,7 @@ const Main = () => {
       <AuthPage initialMethod="login" />
     );
   };
+
   const ProtectedRegister = () => {
     return isAuthorized ? (
       <Navigate to="/" />
@@ -18,14 +24,19 @@ const Main = () => {
       <AuthPage initialMethod="register" />
     );
   };
+
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<ProtectedLogin />} />
         <Route path="/register" element={<ProtectedRegister />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/init-angle" element={<InitAngle />} />         {/* ✅ 추가 */}
+        <Route path="/predict-angle" element={<PredictAngle />} />   {/* ✅ 추가 */}
       </Routes>
     </Router>
   );
 };
+
 export default Main;
