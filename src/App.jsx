@@ -12,20 +12,13 @@ const Main = () => {
       <AuthPage initialMethod="login" />
     );
   };
-  const ProtectedRegister = () => {
-    return isAuthorized ? (
-      <Navigate to="/" />
-    ) : (
-      <AuthPage initialMethod="register" />
-    );
-  };
+
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login/callback" element={<RedirectGoogleAuth />} />
         <Route path="/login" element={<ProtectedLogin />} />
-        <Route path="/register" element={<ProtectedRegister />} />
       </Routes>
     </Router>
   );
