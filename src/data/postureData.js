@@ -10,6 +10,8 @@ export const postureRecords = [
       date: '2025-06-02',
       alerts: 5,
       avgAngle: 25
-    }
+    },
+    
+    
   ];
   
